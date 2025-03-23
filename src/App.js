@@ -14,20 +14,24 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 function App() {
   const [transactions, setTransactions] = useState([]);
-  const [allTransactions, setAllTransactions] = useState([]); // Store all transactions for month list
+  const [allTransactions, setAllTransactions] = useState([]);
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState('expense');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [predictedSavings, setPredictedSavings] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState('all'); // Default to 'all'
+  const [selectedMonth, setSelectedMonth] = useState('all');
   const [error, setError] = useState(null);
 
   const fetchData = (month = '') => {
-    const url = month && month !== 'all' ? `https://finance-tracker-backend.onrender.com/api/transactions/?month=${month}` : 'https://finance-tracker-backend.onrender.com/api/transactions/';
-    const predictUrl = month && month !== 'all' ? `https://finance-tracker-backend.onrender.com/api/predict/?month=${month}` : 'https://finance-tracker-backend.onrender.com/api/predict/';
-  // ... rest of the function
+    const url = month && month !== 'all' 
+      ? `https://finance-tracker-backend-86ys.onrender.com/api/transactions/?month=${month}` 
+      : 'https://finance-tracker-backend-86ys.onrender.com/api/transactions/';
+    const predictUrl = month && month !== 'all' 
+      ? `https://finance-tracker-backend-86ys.onrender.com/api/predict/?month=${month}` 
+      : 'https://finance-tracker-backend-86ys.onrender.com/api/predict/';
+
     axios.get(url)
       .then(response => {
         if (response.data.error) {
@@ -58,8 +62,8 @@ function App() {
         setError(error.response?.data?.error || 'Failed to fetch prediction');
       });
 
-    // Fetch all transactions for month list (only once or after adding)
-    axios.get('http://127.0.0.1:8000/api/transactions/')
+    // Fetch all transactions for month list
+    axios.get('https://finance-tracker-backend-86ys.onrender.com/api/transactions/')
       .then(response => setAllTransactions(response.data))
       .catch(error => console.error('Failed to fetch all transactions'));
   };
@@ -71,7 +75,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newTransaction = { amount, category, type, date, description };
-    axios.post('http://127.0.0.1:8000/api/transactions/', newTransaction)
+    axios.post('https://finance-tracker-backend-86ys.onrender.com/api/transactions/', newTransaction)
       .then(response => {
         setTransactions([...transactions, response.data]);
         setAmount(''); setCategory(''); setDate(''); setDescription('');
@@ -203,7 +207,6 @@ function App() {
         </Box>
       </Paper>
 
-      {/* Dynamic Month Dropdown */}
       <Box sx={{ mb: 3 }}>
         <FormControl variant="outlined" size="small" sx={{ minWidth: 200 }}>
           <InputLabel>Filter by Month</InputLabel>
